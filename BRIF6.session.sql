@@ -1,5 +1,7 @@
+DROP DATABASE ELECNACV2;
+-- @block
+CREATE DATABASE ELECNACV2;
 USE ELECNACV2;
--- UPDATE Users SET username = WHERE username = username  
 CREATE TABLE Users (
     UserID INT PRIMARY KEY AUTO_INCREMENT,
     Username VARCHAR(255) UNIQUE,
@@ -8,7 +10,6 @@ CREATE TABLE Users (
     Role ENUM('admin', 'user') DEFAULT 'user',
     Verified BOOLEAN DEFAULT FALSE
 );
--- Add more users as needed
 INSERT INTO Users (Username, Email, Password, Role, Verified)
 VALUES (
         'Admin',
@@ -35,10 +36,10 @@ CREATE TABLE Categories (
     CategoryID INT PRIMARY KEY AUTO_INCREMENT,
     CategoryName VARCHAR(255)
 );
--- Add more categories as needed
-INSERT INTO Categories (CategoryID, CategoryName)
-VALUES (1, 'Electronics'),
-    (2, 'Robotics');
+INSERT INTO Categories (CategoryName)
+VALUES ('Laptops'),
+    ('Accessorys'),
+    ('Spearkers');
 CREATE TABLE Products (
     ProductID INT PRIMARY KEY AUTO_INCREMENT,
     Reference VARCHAR(255) NOT NULL,
@@ -52,7 +53,7 @@ CREATE TABLE Products (
     MinQuantity INT NOT NULL,
     StockQuantity INT NOT NULL,
     Category VARCHAR(255) NOT NULL,
-    Hidden BOOLEAN DEFAULT FALSE NOT NULL,
+    Hidden BOOLEAN DEFAULT FALSE NOT NULL
 );
 INSERT INTO Products (
         Image,
@@ -65,12 +66,12 @@ INSERT INTO Products (
         Description,
         MinQuantity,
         StockQuantity,
-        Category,
+        Category
     )
 VALUES (
-        'img/laptopimg.jpg',
+        'imgs/laptopimg.jpg',
         'ABC123',
-        'Product1',
+        'Laptop',
         '123456789',
         10.99,
         15.99,
@@ -78,5 +79,382 @@ VALUES (
         'Product description goes here.',
         5,
         100,
-        'Electronics',
+        'Laptops'
+    ),
+    (
+        'imgs/laptopimg.jpg',
+        'ABC123',
+        'Laptop',
+        '123456789',
+        10.99,
+        15.99,
+        '2.00',
+        'Product description goes here.',
+        5,
+        100,
+        'Laptops'
+    ),
+    (
+        'imgs/laptopimg.jpg',
+        'ABC123',
+        'Laptop',
+        '123456789',
+        10.99,
+        15.99,
+        '2.00',
+        'Product description goes here.',
+        5,
+        100,
+        'Laptops'
+    ),
+    (
+        'imgs/laptopimg.jpg',
+        'ABC123',
+        'Laptop',
+        '123456789',
+        10.99,
+        15.99,
+        '2.00',
+        'Product description goes here.',
+        5,
+        100,
+        'Laptops'
+    ),
+    (
+        'imgs/laptopimg.jpg',
+        'ABC123',
+        'Laptop',
+        '123456789',
+        10.99,
+        15.99,
+        '2.00',
+        'Product description goes here.',
+        5,
+        100,
+        'Laptops'
+    ),
+    (
+        'imgs/laptopimg.jpg',
+        'ABC123',
+        'Laptop',
+        '123456789',
+        10.99,
+        15.99,
+        '2.00',
+        'Product description goes here.',
+        5,
+        100,
+        'Laptops'
+    ),
+    (
+        'imgs/laptopimg.jpg',
+        'ABC123',
+        'Laptop',
+        '123456789',
+        10.99,
+        15.99,
+        '2.00',
+        'Product description goes here.',
+        5,
+        100,
+        'Laptops'
+    ),
+    (
+        'imgs/laptopimg.jpg',
+        'ABC123',
+        'Laptop',
+        '123456789',
+        10.99,
+        15.99,
+        '2.00',
+        'Product description goes here.',
+        5,
+        100,
+        'Laptops'
+    ),
+    (
+        'imgs/laptopimg.jpg',
+        'ABC123',
+        'Laptop',
+        '123456789',
+        10.99,
+        15.99,
+        '2.00',
+        'Product description goes here.',
+        5,
+        100,
+        'Laptops'
+    ),
+    (
+        'imgs/accimg.jpg',
+        'ABC123',
+        'Laptop',
+        '123456789',
+        10.99,
+        15.99,
+        '2.00',
+        'Product description goes here.',
+        5,
+        100,
+        'Accessorys'
+    ),
+    (
+        'imgs/accimg.jpg',
+        'ABC123',
+        'Laptop',
+        '123456789',
+        10.99,
+        15.99,
+        '2.00',
+        'Product description goes here.',
+        5,
+        100,
+        'Accessorys'
+    ),
+    (
+        'imgs/accimg.jpg',
+        'ABC123',
+        'Laptop',
+        '123456789',
+        10.99,
+        15.99,
+        '2.00',
+        'Product description goes here.',
+        5,
+        100,
+        'Accessorys'
+    ),
+    (
+        'imgs/accimg.jpg',
+        'ABC123',
+        'Laptop',
+        '123456789',
+        10.99,
+        15.99,
+        '2.00',
+        'Product description goes here.',
+        5,
+        100,
+        'Accessorys'
+    ),
+    (
+        'imgs/accimg.jpg',
+        'ABC123',
+        'Laptop',
+        '123456789',
+        10.99,
+        15.99,
+        '2.00',
+        'Product description goes here.',
+        5,
+        100,
+        'Accessorys'
+    ),
+    (
+        'imgs/accimg.jpg',
+        'ABC123',
+        'Laptop',
+        '123456789',
+        10.99,
+        15.99,
+        '2.00',
+        'Product description goes here.',
+        5,
+        100,
+        'Accessorys'
+    ),
+    (
+        'imgs/accimg.jpg',
+        'ABC123',
+        'Laptop',
+        '123456789',
+        10.99,
+        15.99,
+        '2.00',
+        'Product description goes here.',
+        5,
+        100,
+        'Accessorys'
+    ),
+    (
+        'imgs/accimg.jpg',
+        'ABC123',
+        'Laptop',
+        '123456789',
+        10.99,
+        15.99,
+        '2.00',
+        'Product description goes here.',
+        5,
+        100,
+        'Accessorys'
+    ),
+    (
+        'imgs/accimg.jpg',
+        'ABC123',
+        'Laptop',
+        '123456789',
+        10.99,
+        15.99,
+        '2.00',
+        'Product description goes here.',
+        5,
+        100,
+        'Accessorys'
+    ),
+    (
+        'imgs/speakerimg.jpg',
+        'ABC123',
+        'Laptop',
+        '123456789',
+        10.99,
+        15.99,
+        '2.00',
+        'Product description goes here.',
+        5,
+        100,
+        'Spearkers'
+    ),
+    (
+        'imgs/speakerimg.jpg',
+        'ABC123',
+        'Laptop',
+        '123456789',
+        10.99,
+        15.99,
+        '2.00',
+        'Product description goes here.',
+        5,
+        100,
+        'Spearkers'
+    ),
+    (
+        'imgs/speakerimg.jpg',
+        'ABC123',
+        'Laptop',
+        '123456789',
+        10.99,
+        15.99,
+        '2.00',
+        'Product description goes here.',
+        5,
+        100,
+        'Spearkers'
+    ),
+    (
+        'imgs/speakerimg.jpg',
+        'ABC123',
+        'Laptop',
+        '123456789',
+        10.99,
+        15.99,
+        '2.00',
+        'Product description goes here.',
+        5,
+        100,
+        'Spearkers'
+    ),
+    (
+        'imgs/speakerimg.jpg',
+        'ABC123',
+        'Laptop',
+        '123456789',
+        10.99,
+        15.99,
+        '2.00',
+        'Product description goes here.',
+        5,
+        100,
+        'Spearkers'
+    ),
+    (
+        'imgs/speakerimg.jpg',
+        'ABC123',
+        'Laptop',
+        '123456789',
+        10.99,
+        15.99,
+        '2.00',
+        'Product description goes here.',
+        5,
+        100,
+        'Spearkers'
+    ),
+    (
+        'imgs/speakerimg.jpg',
+        'ABC123',
+        'Laptop',
+        '123456789',
+        10.99,
+        15.99,
+        '2.00',
+        'Product description goes here.',
+        5,
+        100,
+        'Spearkers'
+    ),
+    (
+        'imgs/speakerimg.jpg',
+        'ABC123',
+        'Laptop',
+        '123456789',
+        10.99,
+        15.99,
+        '2.00',
+        'Product description goes here.',
+        5,
+        100,
+        'Spearkers'
+    ),
+    (
+        'imgs/speakerimg.jpg',
+        'ABC123',
+        'Laptop',
+        '123456789',
+        10.99,
+        15.99,
+        '2.00',
+        'Product description goes here.',
+        5,
+        100,
+        'Spearkers'
+    ),
+    (
+        'imgs/speakerimg.jpg',
+        'ABC123',
+        'Laptop',
+        '123456789',
+        10.99,
+        15.99,
+        '2.00',
+        'Product description goes here.',
+        5,
+        100,
+        'Spearkers'
+    ),
+    (
+        'imgs/speakerimg.jpg',
+        'ABC123',
+        'Laptop',
+        '123456789',
+        10.99,
+        15.99,
+        '2.00',
+        'Product description goes here.',
+        5,
+        100,
+        'Spearkers'
+    ),
+    (
+        'imgs/speakerimg.jpg',
+        'ABC123',
+        'Laptop',
+        '123456789',
+        10.99,
+        15.99,
+        '2.00',
+        'Product description goes here.',
+        5,
+        100,
+        'Spearkers'
     );

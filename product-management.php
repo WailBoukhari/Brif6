@@ -180,7 +180,17 @@ if ($result->num_rows > 0) {
         $products[] = $row;
     }
 }
+// Fetch products from the database
+$sql1 = "SELECT * FROM Categories";
+$result1 = $conn->query($sql1);
 
+$categorys = [];
+
+if ($result1->num_rows > 0) {
+    while ($row = $result1->fetch_assoc()) {
+        $categorys[] = $row;
+    }
+}
 $conn->close();
 ?>
 <!-- Your HTML part -->
@@ -190,9 +200,14 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <title>Dashboard</title>
+
+    <!-- fontawesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        integrity="sha256-hk1J8HZqEW/p7zC0xjYYr4EhGtYszmJdz21pKBC7ROU=" crossorigin="anonymous" />
 </head>
 
 <body>
@@ -446,8 +461,11 @@ $conn->close();
                             <div class="mb-3">
                                 <label for="addCategory" class="form-label">Category:</label>
                                 <select class="form-select" id="addCategory" name="addCategory" required>
-                                    <option value="Electronics">Electronics</option>
-                                    <option value="Robotics">Robotics</option>
+                                    <?php foreach ($categorys as $category) : ?>
+                                    <option value="<?php echo $category['CategoryName']; ?>">
+                                        <?php echo $category['CategoryName']; ?></option>
+                                    <?php endforeach; ?>
+
                                 </select>
                             </div>
                             <div class="mb-3">

@@ -3,7 +3,7 @@ include 'db_cnx.php'; // Include your database connection file
 session_start();
 
 // Define the number of products per page
-$productsPerPage = 9;
+$productsPerPage = 10;
 
 // Fetch all unique categories for the category filter
 $sqlCategories = "SELECT DISTINCT Category FROM Products";
@@ -15,11 +15,40 @@ if (!$resultCategories) {
     exit();
 }
 
+
 // Filter products based on form submissions
-$filterCategory = isset($_POST['filterCategory']) ? $_POST['filterCategory'] : '';
-$filterMinPrice = isset($_POST['filterMinPrice']) ? $_POST['filterMinPrice'] : '';
-$filterMaxPrice = isset($_POST['filterMaxPrice']) ? $_POST['filterMaxPrice'] : '';
-$filterLowStock = isset($_POST['filterLowStock']) ? true : false;
+if (isset($_POST['filterCategory'])) {
+    $filterCategory = $_POST['filterCategory'];
+} elseif (isset($_SESSION['filterCategory'])) {
+    $filterCategory = $_SESSION['filterCategory'];
+} else {
+    $filterCategory = '';
+}
+if (isset($_POST['filterMinPrice'])) {
+    $filterMinPrice = $_POST['filterMinPrice'];
+} elseif (isset($_SESSION['filterMinPrice'])) {
+    $filterMinPrice = $_SESSION['filterMinPrice'];
+} else {
+    $filterMinPrice = '';
+}
+if (isset($_POST['filterMaxPrice'])) {
+    $filterMaxPrice = $_POST['filterMaxPrice'];
+} elseif (isset($_SESSION['filterMaxPrice'])) {
+    $filterMaxPrice = $_SESSION['filterMaxPrice'];
+} else {
+    $filterMaxPrice = '';
+}
+if (isset($_POST['filterLowStock'])) {
+    $filterLowStock = true;
+} else {
+    $filterLowStock = false;
+}
+
+// Store filter values in session variables
+$_SESSION['filterCategory'] = $filterCategory;
+$_SESSION['filterMinPrice'] = $filterMinPrice;
+$_SESSION['filterMaxPrice'] = $filterMaxPrice;
+
 
 // Get the current page number
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -72,6 +101,7 @@ $totalProducts = $rowCount['total'];
 // Calculate the total number of pages
 $totalPages = ceil($totalProducts / $productsPerPage);
 
+
 // Close the database connection
 mysqli_close($conn);
 ?>
@@ -84,8 +114,10 @@ mysqli_close($conn);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Products</title>
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <!-- Add your custom CSS styles -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <!-- fontawesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha256-hk1J8HZqEW/p7zC0xjYYr4EhGtYszmJdz21pKBC7ROU=" crossorigin="anonymous" />
     <style>
         body {
             padding: 20px;
@@ -120,7 +152,7 @@ mysqli_close($conn);
                 <ul class="navbar-nav ml-auto">
                     <!-- Dashboard Button (Only for Admin) -->
                     <?php
-                    $isAdmin = true; // Replace this with your actual logic to determine if the user is an admin
+                    $isAdmin = isset($_SESSION['user']) && $_SESSION['user']['role'] == 'admin';
                     if ($isAdmin) {
                         echo '<li class="nav-item">';
                         echo '<a class="nav-link" href="dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a>';
@@ -142,21 +174,23 @@ mysqli_close($conn);
                 <div class="col-md-3">
                     <label for="filterCategory" class="form-label">Category:</label>
                     <select id="filterCategory" name="filterCategory" class="form-select">
-                        <option value="" selected>All Categories</option>
+                        <option value="" <?php echo ($filterCategory == '') ? 'selected' : ''; ?>>All Categories
+                        </option>
                         <?php
                         while ($rowCategory = mysqli_fetch_assoc($resultCategories)) {
-                            echo "<option value='{$rowCategory['Category']}'>{$rowCategory['Category']}</option>";
+                            $selected = ($filterCategory == $rowCategory['Category']) ? 'selected' : '';
+                            echo "<option value='{$rowCategory['Category']}' $selected>{$rowCategory['Category']}</option>";
                         }
                         ?>
                     </select>
                 </div>
                 <div class="col-md-3">
                     <label for="filterMinPrice" class="form-label">Min Price:</label>
-                    <input type="number" id="filterMinPrice" name="filterMinPrice" class="form-control" step="0.01">
+                    <input type="number" id="filterMinPrice" name="filterMinPrice" class="form-control" step="0.01" value="<?php echo $filterMinPrice; ?>">
                 </div>
                 <div class="col-md-3">
                     <label for="filterMaxPrice" class="form-label">Max Price:</label>
-                    <input type="number" id="filterMaxPrice" name="filterMaxPrice" class="form-control" step="0.01">
+                    <input type="number" id="filterMaxPrice" name="filterMaxPrice" class="form-control" step="0.01" value="<?php echo $filterMaxPrice; ?>">
                 </div>
                 <div class="col-md-3">
                     <div class="form-check mt-4">
@@ -214,11 +248,11 @@ mysqli_close($conn);
             </ul>
         </nav>
     </div>
-
-    <!-- Bootstrap JS (Optional) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Font Awesome JS -->
-    <script src="https://kit.fontawesome.com/ea3542be0c.js" crossorigin="anonymous"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha384-GLhlTQ8iS6LHs pierced YWR1u7kDToSf5NV9In1EJ+sKtwEVR5EJFdm2i5EG98vUuwjA" crossorigin="anonymous"></script>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
+    </script>
 </body>
 
 </html>
