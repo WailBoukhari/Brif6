@@ -202,12 +202,10 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
     <!-- fontawesome CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-        integrity="sha256-hk1J8HZqEW/p7zC0xjYYr4EhGtYszmJdz21pKBC7ROU=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha256-hk1J8HZqEW/p7zC0xjYYr4EhGtYszmJdz21pKBC7ROU=" crossorigin="anonymous" />
 </head>
 
 <body>
@@ -241,146 +239,104 @@ $conn->close();
             <tbody>
                 <!-- Loop through products and display them -->
                 <?php foreach ($products as $product) : ?>
-                <tr>
-                    <td><?php echo $product['ProductID']; ?></td>
-                    <td><img class="w-75" src="<?php echo $product['Image']; ?>" alt=""></td>
-                    <td><?php echo $product['Reference']; ?></td>
-                    <td><?php echo $product['Label']; ?></td>
-                    <td><?php echo $product['Barcode']; ?></td>
-                    <td><?php echo $product['PurchasePrice']; ?></td>
-                    <td><?php echo $product['FinalPrice']; ?></td>
-                    <td><?php echo $product['PriceOffer']; ?></td>
-                    <td><?php echo $product['Description']; ?></td>
-                    <td><?php echo $product['MinQuantity']; ?></td>
-                    <td><?php echo $product['StockQuantity']; ?></td>
-                    <td><?php echo $product['Category']; ?></td>
-                    <td><?php echo $product['Hidden']; ?></td>
-                    <td>
-                        <form method="post">
-                            <input type="hidden" name="productId" value="<?php echo $product['ProductID']; ?>">
-                            <input type="hidden" name="currentStatus" value="<?php echo $product['Hidden']; ?>">
-                            <button type="submit" name="toggleStatus"
-                                class="btn btn-<?php echo $product['Hidden'] ? 'danger' : 'success'; ?> btn-sm">
-                                <?php echo $product['Hidden'] ? 'Hide' : 'Unhide'; ?>
-                            </button>
-                        </form>
+                    <tr>
+                        <td><?php echo $product['ProductID']; ?></td>
+                        <td><img class="w-75" src="<?php echo $product['Image']; ?>" alt=""></td>
+                        <td><?php echo $product['Reference']; ?></td>
+                        <td><?php echo $product['Label']; ?></td>
+                        <td><?php echo $product['Barcode']; ?></td>
+                        <td><?php echo $product['PurchasePrice']; ?></td>
+                        <td><?php echo $product['FinalPrice']; ?></td>
+                        <td><?php echo $product['PriceOffer']; ?></td>
+                        <td><?php echo $product['Description']; ?></td>
+                        <td><?php echo $product['MinQuantity']; ?></td>
+                        <td><?php echo $product['StockQuantity']; ?></td>
+                        <td><?php echo $product['Category']; ?></td>
+                        <td><?php echo $product['Hidden']; ?></td>
+                        <td>
+                            <form method="post">
+                                <input type="hidden" name="productId" value="<?php echo $product['ProductID']; ?>">
+                                <input type="hidden" name="currentStatus" value="<?php echo $product['Hidden']; ?>">
+                                <button type="submit" name="toggleStatus" class="btn btn-<?php echo $product['Hidden'] ? 'danger' : 'success'; ?> btn-sm">
+                                    <?php echo $product['Hidden'] ? 'Hide' : 'Unhide'; ?>
+                                </button>
+                            </form>
 
-                        <button type="button" class="btn btn-primary btn"
-                            onclick="showUpdateModal(<?php echo $product['ProductID']; ?>)">
-                            Edit
-                        </button>
-                    </td>
-                </tr>
-                <!-- Update Modal for each users -->
-                <div id="updateModal<?php echo $product['ProductID']; ?>" class="modal" style="display: none;">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="updateModalLabel<?php echo $product['ProductID']; ?>">Update
-                                    Product</h5>
-                            </div>
-                            <div class="modal-body">
-                                <!-- Add your form fields for updating a product -->
-                                <form method="post" enctype="multipart/form-data">
-                                    <input type="hidden" name="productId" value="<?php echo $product['ProductID']; ?>">
-                                    <input type="hidden" name="currentStatus" value="<?php echo $product['Hidden']; ?>">
-                                    <div class="mb-3">
-                                        <label for="updateReference<?php echo $product['ProductID']; ?>"
-                                            class="form-label">Reference:</label>
-                                        <input type="text" class="form-control"
-                                            id="updateReference<?php echo $product['ProductID']; ?>"
-                                            name="updateReference" value="<?php echo $product['Reference']; ?>"
-                                            required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="updateLabel<?php echo $product['ProductID']; ?>"
-                                            class="form-label">Label:</label>
-                                        <input type="text" class="form-control"
-                                            id="updateLabel<?php echo $product['ProductID']; ?>" name="updateLabel"
-                                            value="<?php echo $product['Label']; ?>" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="updateBarcode<?php echo $product['ProductID']; ?>"
-                                            class="form-label">Barcode:</label>
-                                        <input type="text" class="form-control"
-                                            id="updateBarcode<?php echo $product['ProductID']; ?>" name="updateBarcode"
-                                            value="<?php echo $product['Barcode']; ?>" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="updatePurchasePrice<?php echo $product['ProductID']; ?>"
-                                            class="form-label">Purchase Price:</label>
-                                        <input type="text" class="form-control"
-                                            id="updatePurchasePrice<?php echo $product['ProductID']; ?>"
-                                            name="updatePurchasePrice" value="<?php echo $product['PurchasePrice']; ?>"
-                                            required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="updatePurchasePrice<?php echo $product['ProductID']; ?>"
-                                            class="form-label">Final Price:</label>
-                                        <input type="text" class="form-control"
-                                            id="updateFinalPrice<?php echo $product['ProductID']; ?>"
-                                            name="updateFinalPrice" value="<?php echo $product['FinalPrice']; ?>"
-                                            required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="updatePriceOffer<?php echo $product['ProductID']; ?>"
-                                            class="form-label">Price Offer:</label>
-                                        <input type="text" class="form-control"
-                                            id="updatePriceOffer<?php echo $product['ProductID']; ?>"
-                                            name="updatePriceOffer" value="<?php echo $product['PriceOffer']; ?>"
-                                            required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="updateDescription<?php echo $product['ProductID']; ?>"
-                                            class="form-label">Description:</label>
-                                        <input type="text" class="form-control"
-                                            id="updateDescription<?php echo $product['ProductID']; ?>"
-                                            name="updateDescription" value="<?php echo $product['Description']; ?>"
-                                            required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="updateMinQuantity<?php echo $product['ProductID']; ?>"
-                                            class="form-label">MinQuantity:</label>
-                                        <input type="text" class="form-control"
-                                            id="updateMinQuantity<?php echo $product['ProductID']; ?>"
-                                            name="updateMinQuantity" value="<?php echo $product['MinQuantity']; ?>"
-                                            required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="updateStockQuantity<?php echo $product['ProductID']; ?>"
-                                            class="form-label">StockQuantity:</label>
-                                        <input type="text" class="form-control"
-                                            id="updateStockQuantity<?php echo $product['ProductID']; ?>"
-                                            name="updateStockQuantity" value="<?php echo $product['StockQuantity']; ?>"
-                                            required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="updateCategory<?php echo $product['ProductID']; ?>"
-                                            class="form-label">Category:</label>
-                                        <select class="form-select"
-                                            id="updateCategory<?php echo $product['ProductID']; ?>"
-                                            name="updateCategory" required>
-                                            <option value="Electronics"
-                                                <?php echo ($product['Category'] === 'Electronics') ? 'selected' : ''; ?>>
-                                                Electronics</option>
-                                            <option value="Robotics"
-                                                <?php echo ($product['Category'] === 'Robotics') ? 'selected' : ''; ?>>
-                                                Robotics</option>
-                                        </select>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="updateImage<?php echo $product['ProductID']; ?>">Update
-                                            Image:</label>
-                                        <input type="file" name="updateImage"
-                                            id="updateImage<?php echo $product['ProductID']; ?>" accept=" image/*">
-                                    </div>
-                                    <button type="submit" name="updateProductForm" class="btn btn-primary">Update
-                                        Product</button>
-                                </form>
+                            <button type="button" class="btn btn-primary btn" onclick="showUpdateModal(<?php echo $product['ProductID']; ?>)">
+                                Edit
+                            </button>
+                        </td>
+                    </tr>
+                    <!-- Update Modal for each users -->
+                    <div id="updateModal<?php echo $product['ProductID']; ?>" class="modal" style="display: none;">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="updateModalLabel<?php echo $product['ProductID']; ?>">Update
+                                        Product</h5>
+                                </div>
+                                <div class="modal-body">
+                                    <!-- Add your form fields for updating a product -->
+                                    <form method="post" enctype="multipart/form-data">
+                                        <input type="hidden" name="productId" value="<?php echo $product['ProductID']; ?>">
+                                        <input type="hidden" name="currentStatus" value="<?php echo $product['Hidden']; ?>">
+                                        <div class="mb-3">
+                                            <label for="updateReference<?php echo $product['ProductID']; ?>" class="form-label">Reference:</label>
+                                            <input type="text" class="form-control" id="updateReference<?php echo $product['ProductID']; ?>" name="updateReference" value="<?php echo $product['Reference']; ?>" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="updateLabel<?php echo $product['ProductID']; ?>" class="form-label">Label:</label>
+                                            <input type="text" class="form-control" id="updateLabel<?php echo $product['ProductID']; ?>" name="updateLabel" value="<?php echo $product['Label']; ?>" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="updateBarcode<?php echo $product['ProductID']; ?>" class="form-label">Barcode:</label>
+                                            <input type="text" class="form-control" id="updateBarcode<?php echo $product['ProductID']; ?>" name="updateBarcode" value="<?php echo $product['Barcode']; ?>" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="updatePurchasePrice<?php echo $product['ProductID']; ?>" class="form-label">Purchase Price:</label>
+                                            <input type="text" class="form-control" id="updatePurchasePrice<?php echo $product['ProductID']; ?>" name="updatePurchasePrice" value="<?php echo $product['PurchasePrice']; ?>" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="updatePurchasePrice<?php echo $product['ProductID']; ?>" class="form-label">Final Price:</label>
+                                            <input type="text" class="form-control" id="updateFinalPrice<?php echo $product['ProductID']; ?>" name="updateFinalPrice" value="<?php echo $product['FinalPrice']; ?>" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="updatePriceOffer<?php echo $product['ProductID']; ?>" class="form-label">Price Offer:</label>
+                                            <input type="text" class="form-control" id="updatePriceOffer<?php echo $product['ProductID']; ?>" name="updatePriceOffer" value="<?php echo $product['PriceOffer']; ?>" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="updateDescription<?php echo $product['ProductID']; ?>" class="form-label">Description:</label>
+                                            <input type="text" class="form-control" id="updateDescription<?php echo $product['ProductID']; ?>" name="updateDescription" value="<?php echo $product['Description']; ?>" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="updateMinQuantity<?php echo $product['ProductID']; ?>" class="form-label">MinQuantity:</label>
+                                            <input type="text" class="form-control" id="updateMinQuantity<?php echo $product['ProductID']; ?>" name="updateMinQuantity" value="<?php echo $product['MinQuantity']; ?>" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="updateStockQuantity<?php echo $product['ProductID']; ?>" class="form-label">StockQuantity:</label>
+                                            <input type="text" class="form-control" id="updateStockQuantity<?php echo $product['ProductID']; ?>" name="updateStockQuantity" value="<?php echo $product['StockQuantity']; ?>" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="updateCategory<?php echo $product['ProductID']; ?>" class="form-label">Category:</label>
+                                            <select class="form-select" id="updateCategory<?php echo $product['ProductID']; ?>" name="updateCategory" required>
+                                                <option value="Electronics" <?php echo ($product['Category'] === 'Electronics') ? 'selected' : ''; ?>>
+                                                    Electronics</option>
+                                                <option value="Robotics" <?php echo ($product['Category'] === 'Robotics') ? 'selected' : ''; ?>>
+                                                    Robotics</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="updateImage<?php echo $product['ProductID']; ?>">Update
+                                                Image:</label>
+                                            <input type="file" name="updateImage" id="updateImage<?php echo $product['ProductID']; ?>" accept=" image/*">
+                                        </div>
+                                        <button type="submit" name="updateProductForm" class="btn btn-primary">Update
+                                            Product</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
 
                 <?php endforeach; ?>
@@ -404,66 +360,45 @@ $conn->close();
                                 <input type="text" class="form-control" id="addReference" name="addReference" required>
                             </div>
                             <div class="mb-3">
-                                <label for="addLabel<?php echo $product['ProductID']; ?>"
-                                    class="form-label">Label:</label>
-                                <input type="text" class="form-control"
-                                    id="addLabel<?php echo $product['ProductID']; ?>" name="addLabel" value="" required>
+                                <label for="addLabel<?php echo $product['ProductID']; ?>" class="form-label">Label:</label>
+                                <input type="text" class="form-control" id="addLabel<?php echo $product['ProductID']; ?>" name="addLabel" value="" required>
                             </div>
                             <div class="mb-3">
-                                <label for="addBarcode<?php echo $product['ProductID']; ?>"
-                                    class="form-label">Barcode:</label>
-                                <input type="text" class="form-control"
-                                    id="addBarcode<?php echo $product['ProductID']; ?>" name="addBarcode" value=""
-                                    required>
+                                <label for="addBarcode<?php echo $product['ProductID']; ?>" class="form-label">Barcode:</label>
+                                <input type="text" class="form-control" id="addBarcode<?php echo $product['ProductID']; ?>" name="addBarcode" value="" required>
                             </div>
                             <div class="mb-3">
-                                <label for="addPurchasePrice<?php echo $product['ProductID']; ?>"
-                                    class="form-label">Purchase Price:</label>
-                                <input type="text" class="form-control"
-                                    id="addPurchasePrice<?php echo $product['ProductID']; ?>" name="addPurchasePrice"
-                                    value="" required>
+                                <label for="addPurchasePrice<?php echo $product['ProductID']; ?>" class="form-label">Purchase Price:</label>
+                                <input type="text" class="form-control" id="addPurchasePrice<?php echo $product['ProductID']; ?>" name="addPurchasePrice" value="" required>
                             </div>
                             <div class="mb-3">
                                 <label for="addFinalPrice<?php echo $product['ProductID']; ?>" class="form-label">Final
                                     Price:</label>
-                                <input type="text" class="form-control"
-                                    id="addFinalPrice<?php echo $product['ProductID']; ?>" name="addFinalPrice" value=""
-                                    required>
+                                <input type="text" class="form-control" id="addFinalPrice<?php echo $product['ProductID']; ?>" name="addFinalPrice" value="" required>
                             </div>
                             <div class="mb-3">
                                 <label for="addPriceOffer<?php echo $product['ProductID']; ?>" class="form-label">Price
                                     Offer:</label>
-                                <input type="text" class="form-control"
-                                    id="addPriceOffer<?php echo $product['ProductID']; ?>" name="addPriceOffer" value=""
-                                    required>
+                                <input type="text" class="form-control" id="addPriceOffer<?php echo $product['ProductID']; ?>" name="addPriceOffer" value="" required>
                             </div>
                             <div class="mb-3">
-                                <label for="addDescription<?php echo $product['ProductID']; ?>"
-                                    class="form-label">Description:</label>
-                                <input type="text" class="form-control"
-                                    id="addDescription<?php echo $product['ProductID']; ?>" name="addDescription"
-                                    value="" required>
+                                <label for="addDescription<?php echo $product['ProductID']; ?>" class="form-label">Description:</label>
+                                <input type="text" class="form-control" id="addDescription<?php echo $product['ProductID']; ?>" name="addDescription" value="" required>
                             </div>
                             <div class="mb-3">
-                                <label for="addMinQuantity<?php echo $product['ProductID']; ?>"
-                                    class="form-label">MinQuantity:</label>
-                                <input type="text" class="form-control"
-                                    id="addMinQuantity<?php echo $product['ProductID']; ?>" name="addMinQuantity"
-                                    value="" required>
+                                <label for="addMinQuantity<?php echo $product['ProductID']; ?>" class="form-label">MinQuantity:</label>
+                                <input type="text" class="form-control" id="addMinQuantity<?php echo $product['ProductID']; ?>" name="addMinQuantity" value="" required>
                             </div>
                             <div class="mb-3">
-                                <label for="addStockQuantity<?php echo $product['ProductID']; ?>"
-                                    class="form-label">StockQuantity:</label>
-                                <input type="text" class="form-control"
-                                    id="addStockQuantity<?php echo $product['ProductID']; ?>" name="addStockQuantity"
-                                    value="" required>
+                                <label for="addStockQuantity<?php echo $product['ProductID']; ?>" class="form-label">StockQuantity:</label>
+                                <input type="text" class="form-control" id="addStockQuantity<?php echo $product['ProductID']; ?>" name="addStockQuantity" value="" required>
                             </div>
                             <div class="mb-3">
                                 <label for="addCategory" class="form-label">Category:</label>
                                 <select class="form-select" id="addCategory" name="addCategory" required>
                                     <?php foreach ($categorys as $category) : ?>
-                                    <option value="<?php echo $category['CategoryName']; ?>">
-                                        <?php echo $category['CategoryName']; ?></option>
+                                        <option value="<?php echo $category['CategoryName']; ?>">
+                                            <?php echo $category['CategoryName']; ?></option>
                                     <?php endforeach; ?>
 
                                 </select>
@@ -481,33 +416,30 @@ $conn->close();
 
     </div>
     <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"
-        integrity="sha384-GLhlTQ8iS6LHs pierced YWR1u7kDToSf5NV9In1EJ+sKtwEVR5EJFdm2i5EG98vUuwjA"
-        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha384-GLhlTQ8iS6LHs pierced YWR1u7kDToSf5NV9In1EJ+sKtwEVR5EJFdm2i5EG98vUuwjA" crossorigin="anonymous"></script>
     <!-- Bootstrap JS and dependencies -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
     </script>
     <!-- JavaScript for Modals -->
     <script>
-    // Function to show the update modal
-    function showUpdateModal(UserID) {
-        var modal = document.getElementById('updateModal' + UserID);
-        modal.style.display = 'block';
-    }
-
-    // Function to show the add modal
-    function showAddModal() {
-        var modal = document.getElementById('addModal');
-        modal.style.display = 'block';
-    }
-
-    // Close modals when clicking outside the modal
-    window.onclick = function(event) {
-        if (event.target.className === 'modal') {
-            event.target.style.display = 'none';
+        // Function to show the update modal
+        function showUpdateModal(UserID) {
+            var modal = document.getElementById('updateModal' + UserID);
+            modal.style.display = 'block';
         }
-    };
+
+        // Function to show the add modal
+        function showAddModal() {
+            var modal = document.getElementById('addModal');
+            modal.style.display = 'block';
+        }
+
+        // Close modals when clicking outside the modal
+        window.onclick = function(event) {
+            if (event.target.className === 'modal') {
+                event.target.style.display = 'none';
+            }
+        };
     </script>
 
 </body>

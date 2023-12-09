@@ -130,12 +130,10 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Management</title>
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
     <!-- fontawesome CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-        integrity="sha256-hk1J8HZqEW/p7zC0xjYYr4EhGtYszmJdz21pKBC7ROU=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha256-hk1J8HZqEW/p7zC0xjYYr4EhGtYszmJdz21pKBC7ROU=" crossorigin="anonymous" />
 </head>
 
 <body>
@@ -159,94 +157,74 @@ $conn->close();
 
             <tbody>
                 <?php foreach ($users as $user) : ?>
-                <tr>
-                    <td><?php echo $user['UserID']; ?></td>
-                    <td><?php echo $user['Username']; ?></td>
-                    <td><?php echo $user['Email']; ?></td>
-                    <td><?php echo $user['Password']; ?></td>
-                    <td><?php echo $user['Role']; ?></td>
-                    <td><?php echo $user['Verified'] ? 'Yes' : 'No'; ?></td>
-                    <td>
-                        <button type="button" class="btn btn-primary btn"
-                            onclick="showUpdateModal(<?php echo $user['UserID']; ?>)">
-                            Edit
-                        </button>
-                        <form method="post" style="display:inline;">
-                            <input type="hidden" name="deleteUserId" value="<?php echo $user['UserID']; ?>">
-                            <button type="submit" class="btn btn-danger btn-sm"
-                                onclick="return confirm('Are you sure you want to delete this user?');">
-                                Delete
+                    <tr>
+                        <td><?php echo $user['UserID']; ?></td>
+                        <td><?php echo $user['Username']; ?></td>
+                        <td><?php echo $user['Email']; ?></td>
+                        <td><?php echo $user['Password']; ?></td>
+                        <td><?php echo $user['Role']; ?></td>
+                        <td><?php echo $user['Verified'] ? 'Yes' : 'No'; ?></td>
+                        <td>
+                            <button type="button" class="btn btn-primary btn" onclick="showUpdateModal(<?php echo $user['UserID']; ?>)">
+                                Edit
                             </button>
-                        </form>
-                    </td>
-                </tr>
-                <!-- Update User Modal -->
-                <div id="updateModal<?php echo $user['UserID']; ?>" class="modal" style="display: none;">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="updateModalLabel<?php echo $user['UserID']; ?>">Update User
-                                </h5>
-                            </div>
-                            <div class="modal-body">
-                                <form method="post">
-                                    <input type="hidden" name="editUserId" value="<?php echo $user['UserID']; ?>">
-                                    <div class="mb-3">
-                                        <label for="editUsername<?php echo $user['UserID']; ?>"
-                                            class="form-label">Username:</label>
-                                        <input type="text" class="form-control"
-                                            id="editUsername<?php echo $user['UserID']; ?>" name="editUsername"
-                                            value="<?php echo $user['Username']; ?>">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="editEmail<?php echo $user['UserID']; ?>"
-                                            class="form-label">Email:</label>
-                                        <input type="text" class="form-control"
-                                            id="editEmail<?php echo $user['UserID']; ?>" name="editEmail"
-                                            value="<?php echo $user['Email']; ?>">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="editPassword<?php echo $user['UserID']; ?>"
-                                            class="form-label">Password:</label>
-                                        <input type="text" class="form-control"
-                                            id="editPassword<?php echo $user['UserID']; ?>" name="editPassword"
-                                            value="<?php echo $user['Password']; ?>">
+                            <form method="post" style="display:inline;">
+                                <input type="hidden" name="deleteUserId" value="<?php echo $user['UserID']; ?>">
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this user?');">
+                                    Delete
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    <!-- Update User Modal -->
+                    <div id="updateModal<?php echo $user['UserID']; ?>" class="modal" style="display: none;">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="updateModalLabel<?php echo $user['UserID']; ?>">Update User
+                                    </h5>
+                                </div>
+                                <div class="modal-body">
+                                    <form method="post">
+                                        <input type="hidden" name="editUserId" value="<?php echo $user['UserID']; ?>">
+                                        <div class="mb-3">
+                                            <label for="editUsername<?php echo $user['UserID']; ?>" class="form-label">Username:</label>
+                                            <input type="text" class="form-control" id="editUsername<?php echo $user['UserID']; ?>" name="editUsername" value="<?php echo $user['Username']; ?>">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="editEmail<?php echo $user['UserID']; ?>" class="form-label">Email:</label>
+                                            <input type="text" class="form-control" id="editEmail<?php echo $user['UserID']; ?>" name="editEmail" value="<?php echo $user['Email']; ?>">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="editPassword<?php echo $user['UserID']; ?>" class="form-label">Password:</label>
+                                            <input type="text" class="form-control" id="editPassword<?php echo $user['UserID']; ?>" name="editPassword" value="<?php echo $user['Password']; ?>">
 
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="editRole<?php echo $user['UserID']; ?>"
-                                            class="form-label">Role:</label>
-                                        <select class="form-select selectpicker"
-                                            id="editRole<?php echo $user['UserID']; ?>" name="editRole"
-                                            data-live-search="true">
-                                            <option value="admin"
-                                                <?php echo ($user['Role'] === 'Admin') ? 'selected' : ''; ?>>Admin
-                                            </option>
-                                            <option value="user"
-                                                <?php echo ($user['Role'] === 'User') ? 'selected' : ''; ?>>User
-                                            </option>
-                                        </select>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="editVerified<?php echo $user['UserID']; ?>"
-                                            class="form-label">Verified:</label>
-                                        <select class="form-select" id="editVerified<?php echo $user['UserID']; ?>"
-                                            name="editVerified">
-                                            <option value="1"
-                                                <?php echo ($user['Verified'] === 'Yes') ? 'selected' : ''; ?>>Yes
-                                            </option>
-                                            <option value="0"
-                                                <?php echo ($user['Verified'] === 'No') ? 'selected' : ''; ?>>No
-                                            </option>
-                                        </select>
-                                    </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="editRole<?php echo $user['UserID']; ?>" class="form-label">Role:</label>
+                                            <select class="form-select selectpicker" id="editRole<?php echo $user['UserID']; ?>" name="editRole" data-live-search="true">
+                                                <option value="admin" <?php echo ($user['Role'] === 'Admin') ? 'selected' : ''; ?>>Admin
+                                                </option>
+                                                <option value="user" <?php echo ($user['Role'] === 'User') ? 'selected' : ''; ?>>User
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="editVerified<?php echo $user['UserID']; ?>" class="form-label">Verified:</label>
+                                            <select class="form-select" id="editVerified<?php echo $user['UserID']; ?>" name="editVerified">
+                                                <option value="1" <?php echo ($user['Verified'] === 'Yes') ? 'selected' : ''; ?>>Yes
+                                                </option>
+                                                <option value="0" <?php echo ($user['Verified'] === 'No') ? 'selected' : ''; ?>>No
+                                                </option>
+                                            </select>
+                                        </div>
 
-                                    <button type="submit" class="btn btn-primary">Save Changes</button>
-                                </form>
+                                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
                 <?php endforeach; ?>
             </tbody>
@@ -270,15 +248,11 @@ $conn->close();
                             </div>
                             <div class="mb-3">
                                 <label for="addEmail<?php echo $product['UserID']; ?>" class="form-label">Email:</label>
-                                <input type="text" class="form-control" id="addEmail<?php echo $product['UserID']; ?>"
-                                    name="addEmail" value="" required>
+                                <input type="text" class="form-control" id="addEmail<?php echo $product['UserID']; ?>" name="addEmail" value="" required>
                             </div>
                             <div class="mb-3">
-                                <label for="addPassword<?php echo $product['UserID']; ?>"
-                                    class="form-label">Password:</label>
-                                <input type="text" class="form-control"
-                                    id="addPassword<?php echo $product['UserID']; ?>" name="addPassword" value=""
-                                    required>
+                                <label for="addPassword<?php echo $product['UserID']; ?>" class="form-label">Password:</label>
+                                <input type="text" class="form-control" id="addPassword<?php echo $product['UserID']; ?>" name="addPassword" value="" required>
                             </div>
                             <div class="mb-3">
                                 <label for="addRole" class="form-label">Category:</label>
@@ -310,36 +284,33 @@ $conn->close();
     </div>
 
     <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"
-        integrity="sha384-GLhlTQ8iS6LHs pierced YWR1u7kDToSf5NV9In1EJ+sKtwEVR5EJFdm2i5EG98vUuwjA"
-        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha384-GLhlTQ8iS6LHs pierced YWR1u7kDToSf5NV9In1EJ+sKtwEVR5EJFdm2i5EG98vUuwjA" crossorigin="anonymous"></script>
     <!-- Bootstrap JS and dependencies -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
     </script>
 
     <script>
-    // Function to show the update modal
-    function showUpdateModal(UserID) {
-        var modal = document.getElementById('updateModal' + UserID);
-        modal.style.display = 'block';
-    }
-
-    // Function to show the add modal
-    function showAddModal() {
-        var modal = document.getElementById('addModal');
-        modal.style.display = 'block';
-    }
-
-    // Close modals when clicking outside the modal
-    window.onclick = function(event) {
-        if (event.target.className === 'modal') {
-            event.target.style.display = 'none';
+        // Function to show the update modal
+        function showUpdateModal(UserID) {
+            var modal = document.getElementById('updateModal' + UserID);
+            modal.style.display = 'block';
         }
-    };
-    $(document).ready(function() {
-        $('.selectpicker').selectpicker();
-    });
+
+        // Function to show the add modal
+        function showAddModal() {
+            var modal = document.getElementById('addModal');
+            modal.style.display = 'block';
+        }
+
+        // Close modals when clicking outside the modal
+        window.onclick = function(event) {
+            if (event.target.className === 'modal') {
+                event.target.style.display = 'none';
+            }
+        };
+        $(document).ready(function() {
+            $('.selectpicker').selectpicker();
+        });
     </script>
 
 </body>

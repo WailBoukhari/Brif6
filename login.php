@@ -1,41 +1,38 @@
 <?php
-include 'db_cnx.php';
 session_start();
+include 'db_cnx.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST["email"];
     $password = $_POST["password"];
 
-    $sql = "SELECT * FROM Users WHERE Email = '$email' AND Password = '$password'";
-    $result = $conn->query($sql);
+    $stmt = $conn->prepare("SELECT * FROM Users WHERE Email = ? AND Password = ?");
+    $stmt->bind_param("ss", $email, $password);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
         $user = $result->fetch_assoc();
 
         if ($user["Verified"]) {
-            // User is verified, proceed with login
-            session_start();
             $_SESSION["user"] = $user;
-
-            if ($user["Role"] == "admin") {
-                header("Location: dashboard.php"); // Redirect to admin dashboard
-            } else {
-                header("Location: products.php"); // Redirect to product page for regular users
-            }
-
+            $redirect = ($user["Role"] == "admin") ? "dashboard.php" : "products.php";
+            header("Location: $redirect");
             exit();
         } else {
-            // User is not verified, redirect to unverified page
             header("Location: unverified.php");
             exit();
         }
     } else {
-        echo "Invalid email or password";
+        $error_message = "Invalid email or password";
     }
+
+    $stmt->close();
 }
 
 $conn->close();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -88,6 +85,13 @@ $conn->close();
                                 <div class="col-md-9 col-lg-8 mx-auto">
                                     <h3 class="login-heading mb-4">Welcome back!</h3>
 
+                                    <!-- Display error message if any -->
+                                    <?php if (isset($error_message)) : ?>
+                                    <div class="alert alert-danger" role="alert">
+                                        <?php echo $error_message; ?>
+                                    </div>
+                                    <?php endif; ?>
+
                                     <!-- Sign In Form -->
                                     <form method="post">
                                         <div class="form-floating mb-3">
@@ -129,7 +133,6 @@ $conn->close();
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
     </script>
-
 </body>
 
 </html>

@@ -1,6 +1,12 @@
 <?php
-include 'db_cnx.php'; // Include your database connection file
 session_start();
+include 'db_cnx.php'; // Include your database connection file
+
+// Check if the user is not logged in, redirect to the login page
+if (!isset($_SESSION['user'])) {
+    header("Location: login.php");
+    exit();
+}
 
 // Define the number of products per page
 $productsPerPage = 10;
@@ -15,7 +21,6 @@ if (!$resultCategories) {
     exit();
 }
 
-
 // Filter products based on form submissions
 if (isset($_POST['filterCategory'])) {
     $filterCategory = $_POST['filterCategory'];
@@ -24,6 +29,7 @@ if (isset($_POST['filterCategory'])) {
 } else {
     $filterCategory = '';
 }
+
 if (isset($_POST['filterMinPrice'])) {
     $filterMinPrice = $_POST['filterMinPrice'];
 } elseif (isset($_SESSION['filterMinPrice'])) {
@@ -31,6 +37,7 @@ if (isset($_POST['filterMinPrice'])) {
 } else {
     $filterMinPrice = '';
 }
+
 if (isset($_POST['filterMaxPrice'])) {
     $filterMaxPrice = $_POST['filterMaxPrice'];
 } elseif (isset($_SESSION['filterMaxPrice'])) {
@@ -38,6 +45,7 @@ if (isset($_POST['filterMaxPrice'])) {
 } else {
     $filterMaxPrice = '';
 }
+
 if (isset($_POST['filterLowStock'])) {
     $filterLowStock = true;
 } else {
@@ -48,7 +56,6 @@ if (isset($_POST['filterLowStock'])) {
 $_SESSION['filterCategory'] = $filterCategory;
 $_SESSION['filterMinPrice'] = $filterMinPrice;
 $_SESSION['filterMaxPrice'] = $filterMaxPrice;
-
 
 // Get the current page number
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -87,7 +94,21 @@ if (!$resultFilteredProducts) {
 
 // Count the total number of products for pagination
 $sqlCount = "SELECT COUNT(*) AS total FROM Products WHERE Hidden = 0";
+if ($filterCategory != '') {
+    $sqlCount .= " AND Category = '$filterCategory'";
+}
 
+if ($filterMinPrice != '') {
+    $sqlCount .= " AND FinalPrice >= '$filterMinPrice'";
+}
+
+if ($filterMaxPrice != '') {
+    $sqlCount .= " AND FinalPrice <= '$filterMaxPrice'";
+}
+
+if ($filterLowStock) {
+    $sqlCount .= " AND StockQuantity <= MinQuantity"; // Adjust the threshold as needed
+}
 $resultCount = mysqli_query($conn, $sqlCount);
 
 if (!$resultCount) {
@@ -100,8 +121,6 @@ $totalProducts = $rowCount['total'];
 
 // Calculate the total number of pages
 $totalPages = ceil($totalProducts / $productsPerPage);
-
-
 // Close the database connection
 mysqli_close($conn);
 ?>
@@ -150,18 +169,31 @@ mysqli_close($conn);
             <!-- Navbar Links -->
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav ml-auto">
-                    <!-- Dashboard Button (Only for Admin) -->
                     <?php
-                    $isAdmin = isset($_SESSION['user']) && $_SESSION['user']['role'] == 'admin';
-                    if ($isAdmin) {
+                    // Check if the user is logged in
+                    if (isset($_SESSION['user'])) {
+                        // Display welcome message or username
                         echo '<li class="nav-item">';
-                        echo '<a class="nav-link" href="dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a>';
+                        echo '<span class="navbar-text mx-2">Welcome, ' . $_SESSION['user']['Username'] . '!</span>';
+                        echo '</li>';
+
+                        // Check if the user is an admin and display the "Dashboard" link
+                        $isAdmin = isset($_SESSION["user"]["role"]) ? $_SESSION["user"]["role"] : '';
+                        if ($isAdmin === 'admin') {
+                            echo '<li class="nav-item">';
+                            echo '<a class="nav-link" href="dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a>';
+                            echo '</li>';
+                        }
+
+                        // Display the "Logout" link
+                        echo '<li class="nav-item">';
+                        echo '<a class="nav-link" href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a>';
                         echo '</li>';
                     }
                     ?>
-                    <!-- Add more navigation items as needed -->
                 </ul>
             </div>
+
         </div>
     </nav>
 
@@ -194,7 +226,7 @@ mysqli_close($conn);
                 </div>
                 <div class="col-md-3">
                     <div class="form-check mt-4">
-                        <input class="form-check-input" type="checkbox" id="filterLowStock" name="filterLowStock">
+                        <input class="form-check-input" type="checkbox" id="filterLowStock" name="filterLowStock" <?php echo ($filterLowStock) ? 'checked' : ''; ?>>
                         <label class="form-check-label" for="filterLowStock">Show Low Stock</label>
                     </div>
                 </div>
@@ -214,7 +246,6 @@ mysqli_close($conn);
                 echo '<img src="' . $rowProduct['Image'] . '" class="card-img-top w-50 m-auto" alt="Product Image">';
                 echo '<div class="card-body">';
                 echo '<h5 class="card-title">' . $rowProduct['Label'] . '</h5>';
-
                 echo '<p class="card-text">Category: ' . $rowProduct['Description'] . '</p>';
                 echo '<p class="card-text">Category: ' . $rowProduct['Category'] . '</p>';
                 echo '<p class="card-text">Final Price: $' . number_format($rowProduct['FinalPrice'], 2) . '</p>';
@@ -231,7 +262,6 @@ mysqli_close($conn);
                 echo '</div>';
                 echo '</div>';
             }
-
             ?>
         </div>
 
@@ -247,7 +277,15 @@ mysqli_close($conn);
                 ?>
             </ul>
         </nav>
+        <div class="mt-4">
+            <p>Total Products: <?php echo $totalProducts; ?></p>
+            <p>Products per Page: <?php echo $productsPerPage; ?></p>
+            <p>Total Pages: <?php echo $totalPages; ?></p>
+            <p>Current Page: <?php echo $page; ?></p>
+            <p>Offset: <?php echo $offset; ?></p>
+        </div>
     </div>
+
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha384-GLhlTQ8iS6LHs pierced YWR1u7kDToSf5NV9In1EJ+sKtwEVR5EJFdm2i5EG98vUuwjA" crossorigin="anonymous"></script>
     <!-- Bootstrap JS and dependencies -->
