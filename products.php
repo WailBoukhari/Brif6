@@ -178,7 +178,7 @@ mysqli_close($conn);
                         echo '</li>';
 
                         // Check if the user is an admin and display the "Dashboard" link
-                        $isAdmin = isset($_SESSION["user"]["role"]) ? $_SESSION["user"]["role"] : '';
+                        $isAdmin = isset($_SESSION["user"]["Role"]) ? $_SESSION["user"]["Role"] : '';
                         if ($isAdmin === 'admin') {
                             echo '<li class="nav-item">';
                             echo '<a class="nav-link" href="dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a>';

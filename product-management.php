@@ -1,7 +1,4 @@
 <?php
-include 'db_cnx.php';
-session_start();
-
 // Check if a request to toggle status is made
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['toggleStatus'])) {

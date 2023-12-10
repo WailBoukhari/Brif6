@@ -1,11 +1,4 @@
 <?php
-include 'db_cnx.php'; // Include your database connection file
-session_start();
-
-// Check for database connection errors
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
 
 // Fetch users from the database
 $sql = "SELECT * FROM Users";
